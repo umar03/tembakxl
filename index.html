@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>XL Tembak Paket</title>
+</head>
+<body>
+  <h2>Login & Beli Paket XL</h2>
+
+  <label>Nomor HP (awalan 62):</label><br>
+  <input type="text" id="msisdn"><br><br>
+
+  <button onclick="mintaOTP()">1. Minta OTP</button><br><br>
+
+  <label>OTP:</label><br>
+  <input type="text" id="otp"><br><br>
+
+  <label>Pilih Paket:</label><br>
+  <select id="serviceid">
+    <option value="8211369">Waze & Chat 1hr</option>
+    <option value="8211370">Waze & Chat 3hr</option>
+    <option value="8211371">Waze & Chat 7hr</option>
+    <option value="8211372">Instagram 1hr Sahur</option>
+    <option value="8211373">Instagram 3hr Sahur</option>
+    <option value="8211374">Instagram 7hr Sahur</option>
+  </select><br><br>
+
+  <button onclick="loginDanBeli()">2. Login & Beli Paket</button>
+
+  <pre id="output"></pre>
+
+  <script>
+    function mintaOTP() {
+      const msisdn = document.getElementById('msisdn').value;
+      fetch('proses.php', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: 'aksi=otp&msisdn=' + msisdn
+      })
+      .then(res => res.text())
+      .then(data => document.getElementById('output').innerText = data);
+    }
+
+    function loginDanBeli() {
+      const msisdn = document.getElementById('msisdn').value;
+      const otp = document.getElementById('otp').value;
+      const serviceid = document.getElementById('serviceid').value;
+
+      fetch('proses.php', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: `aksi=beli&msisdn=${msisdn}&otp=${otp}&serviceid=${serviceid}`
+      })
+      .then(res => res.text())
+      .then(data => document.getElementById('output').innerText = data);
+    }
+  </script>
+</body>
+</html>
